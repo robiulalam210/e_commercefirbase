@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323459501267",
+    "project_id": "e-commercs-c0c69",
+    "storage_bucket": "e-commercs-c0c69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323459501267:android:adb6adc77ea53ecdad1826",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce_firbase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323459501267-qnf17007fkpuh416t3a70moklt1djctu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB70rb16FO5BD_C1I37ib0c9_oKXvS14XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323459501267-qnf17007fkpuh416t3a70moklt1djctu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
