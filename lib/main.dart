@@ -1,3 +1,4 @@
+import 'package:e_commerce_firbase/provider/admin_add_category_provider.dart';
 import 'package:e_commerce_firbase/provider/admin_add_provider.dart';
 import 'package:e_commerce_firbase/provider/auth_provider.dart';
 import 'package:e_commerce_firbase/ui/splash_screen.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => AdminAddProvider()),
+        ChangeNotifierProvider(create: (_) => AdminAddCategoryProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

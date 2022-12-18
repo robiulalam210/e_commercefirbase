@@ -3,10 +3,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_firbase/Utlis/utlis.dart';
 import 'package:e_commerce_firbase/ui/bottom_nav_controller.dart';
-import 'package:e_commerce_firbase/ui/login_screen.dart';
-import 'package:e_commerce_firbase/ui/user_form.dart';
+import 'package:e_commerce_firbase/ui/auth_screen/user_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../ui/auth_screen/login_screen.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _loding = false;

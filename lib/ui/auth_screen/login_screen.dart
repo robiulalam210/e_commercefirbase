@@ -1,44 +1,43 @@
 import 'package:e_commerce_firbase/const/AppColors.dart';
 import 'package:e_commerce_firbase/provider/auth_provider.dart';
-import 'package:e_commerce_firbase/ui/login_screen.dart';
-import 'package:e_commerce_firbase/ui/user_form.dart';
+import 'package:e_commerce_firbase/ui/auth_screen/registration_screen.dart';
+import 'package:e_commerce_firbase/widgets/customButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-
-class RegistrationScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
 
-  signUp()async{
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserForm()));
+  signIn()async{
     // try {
-    //   UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //   UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
     //       email: _emailController.text,
     //       password: _passwordController.text
     //   );
     //   var authCredential = userCredential.user;
     //   print(authCredential!.uid);
     //   if(authCredential.uid.isNotEmpty){
-    //     //Navigator.push(context, CupertinoPageRoute(builder: (_)=>UserForm()));
+    //     Navigator.push(context, CupertinoPageRoute(builder: (_)=>BottomNavController()));
     //   }
     //   else{
     //     Fluttertoast.showToast(msg: "Something is wrong");
     //   }
     //
     // } on FirebaseAuthException catch (e) {
-    //   if (e.code == 'weak-password') {
-    //     Fluttertoast.showToast(msg: "The password provided is too weak.");
+    //   if (e.code == 'user-not-found') {
+    //     Fluttertoast.showToast(msg: "No user found for that email.");
     //
-    //   } else if (e.code == 'email-already-in-use') {
-    //     Fluttertoast.showToast(msg: "The account already exists for that email.");
+    //   } else if (e.code == 'wrong-password') {
+    //     Fluttertoast.showToast(msg: "Wrong password provided for that user.");
     //
     //   }
     // } catch (e) {
@@ -50,6 +49,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     final authProvider=Provider.of<AuthProvider>(context);
     return Scaffold(
+
       backgroundColor: AppColors.deep_orange,
       body: SafeArea(
         child: Column(
@@ -71,7 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
                     Text(
-                      "Sign Up",
+                      "Sign In",
                       style: TextStyle(fontSize: 22, color: Colors.white),
                     ),
                   ],
@@ -99,7 +99,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 20,
                         ),
                         Text(
-                          "Welcome Buddy!",
+                          "Welcome Back",
                           style: TextStyle(
                               fontSize: 22, color: AppColors.deep_orange),
                         ),
@@ -136,7 +136,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: TextField(
                                 controller: _emailController,
                                 decoration: InputDecoration(
-                                  hintText: "thed9954@gmail.com",
+                                  hintText: "**@gmail.com",
                                   hintStyle: TextStyle(
                                     fontSize: 14,
                                     color: Color(0xFF414041),
@@ -219,26 +219,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 50,
                         ),
                         // elevated button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              var email=_emailController.text.toString();
-                              var password=_passwordController.text.toString();
-                              authProvider.auth_signup(email,password,context);
-                            },
-                            child: authProvider.loding? CircularProgressIndicator(): Text(
-                              "Continue",
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 18),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.deep_orange,
-                              elevation: 3,
-                            ),
-                          ),
-                        ),
+                        customButton("Sign In", (){
+                          var email=_emailController.text.toString();
+                          var password=_passwordController.text.toString();
+
+                          authProvider.auth_Login(email, password,context);
+                        },),
                         SizedBox(
                           height: 20,
                         ),
@@ -253,8 +239,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ),
                             GestureDetector(
-                              child: Text(
-                                " Sign In",
+                              child:authProvider.loding? CircularProgressIndicator(): Text(
+                                " Sign Up",
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -265,7 +251,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                        builder: (context) => LoginScreen()));
+                                        builder: (context) =>
+                                            RegistrationScreen()));
                               },
                             )
                           ],

@@ -5,9 +5,11 @@ import 'package:e_commerce_firbase/ui/bottom_nav_pages/favourite.dart';
 import 'package:e_commerce_firbase/ui/bottom_nav_pages/home.dart';
 import 'package:e_commerce_firbase/ui/bottom_nav_pages/profile.dart';
 import 'package:e_commerce_firbase/ui/bottom_nav_pages/profileall.dart';
-import 'package:e_commerce_firbase/ui/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../admin/home_page_admin.dart';
+import 'auth_screen/login_screen.dart';
 
 class BottomNavController extends StatefulWidget {
   @override
@@ -40,7 +42,7 @@ class _BottomNavControllerState extends State<BottomNavController> {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AdminItem())
+                    MaterialPageRoute(builder: (context) => AdminHomePage())
                    );
               },
               icon: Icon(

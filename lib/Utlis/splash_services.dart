@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:e_commerce_firbase/ui/bottom_nav_controller.dart';
-import 'package:e_commerce_firbase/ui/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../ui/auth_screen/login_screen.dart';
 
 class SplashServices {
   void Login(BuildContext context) {

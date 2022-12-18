@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
   List<String> _carouselImages = [];
   var _dotPosition = 0;
   List _products = [];
+  List _categorys = [];
   var _firestoreInstance = FirebaseFirestore.instance;
 
   fetchCarouselImages() async {
@@ -53,15 +54,20 @@ class _HomeState extends State<Home> {
 
     return qn.docs;
   }
-  //
-  // @override
-  // void initState() {
-  //   fetchCarouselImages();
-  //   fetchProducts();
-  //
-  //
-  //   super.initState();
-  // }
+
+  fetchPCategory() async {
+    QuerySnapshot qn = await _firestoreInstance.collection("category").get();
+    setState(() {
+      for (int i = 0; i < qn.docs.length; i++) {
+        _categorys.add({
+          "product-name": qn.docs[i]["product-name"],
+          "product-img": qn.docs[i]["product-img"],
+        });
+      }
+    });
+
+    return qn.docs;
+  }
 
   int _counter = 0;
 
@@ -71,6 +77,8 @@ class _HomeState extends State<Home> {
 
     fetchCarouselImages();
     fetchProducts();
+    fetchPCategory();
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -114,8 +122,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
-
   void showNotification() {
     setState(() {
       _counter++;
@@ -133,130 +139,215 @@ class _HomeState extends State<Home> {
                 icon: '@mipmap/ic_launcher')));
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       floatingActionButton: FloatingActionButton(onPressed: (){ showNotification();},child: Icon(Icons.add),),
-
-    body: SafeArea(
-          child: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: TextFormField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                      borderSide: BorderSide(color: Colors.blue)),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                      borderSide: BorderSide(color: Colors.grey)),
-                  hintText: "Search products here",
-                  hintStyle: TextStyle(fontSize: 15),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showNotification();
+        },
+        child: Icon(Icons.add),
+      ),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 14, right: 14),
+                child: TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                        borderSide: BorderSide(color: Colors.blue)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                        borderSide: BorderSide(color: Colors.grey)),
+                    hintText: "Search products here",
+                    hintStyle: TextStyle(fontSize: 15),
+                  ),
+                  onTap: () => Navigator.push(context,
+                      CupertinoPageRoute(builder: (_) => SearchScreen())),
                 ),
-                onTap: () => Navigator.push(context,
-                    CupertinoPageRoute(builder: (_) => SearchScreen())),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            AspectRatio(
-              aspectRatio: 3.5,
-              child: CarouselSlider(
-                  items: _carouselImages
-                      .map((item) => Padding(
-                            padding: EdgeInsets.only(left: 3, right: 3),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(item),
-                                      fit: BoxFit.fitWidth)),
-                            ),
-                          ))
-                      .toList(),
-                  options: CarouselOptions(
-                      autoPlay: false,
-                      enlargeCenterPage: true,
-                      viewportFraction: 0.8,
-                      enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      onPageChanged: (val, carouselPageChangedReason) {
-                        setState(() {
-                          _dotPosition = val;
-                        });
-                      })),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            DotsIndicator(
-              dotsCount:
-                  _carouselImages.length == 0 ? 1 : _carouselImages.length,
-              position: _dotPosition.toDouble(),
-              decorator: DotsDecorator(
-                activeColor: AppColors.deep_orange,
-                color: AppColors.deep_orange.withOpacity(0.5),
-                spacing: EdgeInsets.all(2),
-                activeSize: Size(8, 8),
-                size: Size(6, 6),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.01,
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: GridView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 1),
-                  itemBuilder: (_, index) {
-                    return GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetails(_products[index]))),
-                      child: Card(
-                        elevation: 3,
-                        child: Column(
-                          children: [
-                            AspectRatio(
-                                aspectRatio: 2,
-                                child: Container(
-                                    color: Colors.yellow,
-                                    child: Image.network(
-                                      _products[index]["product-img"],
-                                      fit: BoxFit.cover,
-                                    ))),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height*0.01,
+              AspectRatio(
+                aspectRatio: 4.2,
+                child: CarouselSlider(
+                    items: _carouselImages
+                        .map((item) => Padding(
+                              padding: EdgeInsets.only(left: 3, right: 3),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(item),
+                                        fit: BoxFit.cover)),
+                              ),
+                            ))
+                        .toList(),
+                    options: CarouselOptions(
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        viewportFraction: 0.8,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        onPageChanged: (val, carouselPageChangedReason) {
+                          setState(() {
+                            _dotPosition = val;
+                          });
+                        })),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.01,
+              ),
+              DotsIndicator(
+                dotsCount:
+                    _carouselImages.length == 0 ? 1 : _carouselImages.length,
+                position: _dotPosition.toDouble(),
+                decorator: DotsDecorator(
+                  activeColor: AppColors.deep_orange,
+                  color: AppColors.deep_orange.withOpacity(0.5),
+                  spacing: EdgeInsets.all(2),
+                  activeSize: Size(8, 8),
+                  size: Size(6, 6),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Category", style: TextStyle(fontSize: 16)),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("See All", style: TextStyle(fontSize: 16)),
+                  ),
+                ],
+              ),
+
+              //Category,,,,,,,,,,,,,,,,,
+              Container(
+                height: 100,
+                width: double.infinity,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _categorys.length,
+                    itemBuilder: (contex, index) {
+                      return Container(
+                        width: 140,
+                        height: 100,
+                        child: GestureDetector(
+                          // onTap: () => Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             ProductDetails(_products[index]))),
+                          child: Card(
+                            elevation: 3,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                      child: Container(
+                                          width: double.infinity,
+                                          color: Colors.yellow,
+                                          child: Image.network(
+                                            _categorys[index]["product-img"],
+                                            fit: BoxFit.cover,
+                                          ))),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.01,
+                                ),
+                                Text(
+                                  "Product: ${_categorys[index]["product-name"]}",
+                                  maxLines: 1,
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.01,
+                                ),
+                              ],
                             ),
-                            Text(
-                                "Product: ${_products[index]["product-name"]}"),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height*0.01,
-                            ), Text(
-                                "description: ${_products[index]["product-description"]}"),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height*0.01,
-                            ),
-                            Text(
-                                "${_products[index]["product-price"].toString()}"),
-                          ],
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-            ),
-          ],
+                      );
+                    }),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Prodacts", style: TextStyle(fontSize: 16)),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("See All", style: TextStyle(fontSize: 16)),
+                  ),
+                ],
+              ),
+
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: double.infinity,
+                child: GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: _products.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, childAspectRatio: 1),
+                    itemBuilder: (_, index) {
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductDetails(_products[index]))),
+                        child: Card(
+                          elevation: 3,
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                  aspectRatio: 2,
+                                  child: Container(
+                                      color: Colors.yellow,
+                                      child: Image.network(
+                                        _products[index]["product-img"],
+                                        fit: BoxFit.cover,
+                                      ))),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Text(
+                                  "Product: ${_products[index]["product-name"]}"),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Text(
+                                  "description: ${_products[index]["product-description"]}"),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Text(
+                                  "${_products[index]["product-price"].toString()}"),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
         ),
       )),
     );

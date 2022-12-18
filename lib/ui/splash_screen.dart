@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:e_commerce_firbase/Utlis/splash_services.dart';
 import 'package:e_commerce_firbase/const/AppColors.dart';
-import 'package:e_commerce_firbase/ui/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
