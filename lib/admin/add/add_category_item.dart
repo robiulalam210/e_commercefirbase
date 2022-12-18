@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:e_commerce_firbase/Utlis/utlis.dart';
-import 'package:e_commerce_firbase/admin/card_item.dart';
-import 'package:e_commerce_firbase/provider/admin_add_category_provider.dart';
-import 'package:e_commerce_firbase/provider/admin_add_provider.dart';
+import 'package:e_commerce_firbase/provider/admin/admin_add_category_provider.dart';
 import 'package:e_commerce_firbase/widgets/coustom_button.dart';
 import 'package:e_commerce_firbase/widgets/textformfield.dart';
 import 'package:flutter/material.dart';

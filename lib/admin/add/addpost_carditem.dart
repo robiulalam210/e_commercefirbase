@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:e_commerce_firbase/Utlis/utlis.dart';
 import 'package:e_commerce_firbase/admin/card_item.dart';
-import 'package:e_commerce_firbase/provider/admin_add_provider.dart';
 import 'package:e_commerce_firbase/widgets/coustom_button.dart';
 import 'package:e_commerce_firbase/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import '../../provider/admin/admin_add_provider.dart';
 
 class AddPostItem extends StatefulWidget {
   const AddPostItem({Key? key}) : super(key: key);

@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:e_commerce_firbase/Utlis/utlis.dart';
-import 'package:e_commerce_firbase/admin/card_item.dart';
-import 'package:e_commerce_firbase/provider/admin_add_provider.dart';
+import 'package:e_commerce_firbase/provider/admin/admin_add_slider_provider.dart';
 import 'package:e_commerce_firbase/widgets/coustom_button.dart';
 import 'package:e_commerce_firbase/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
@@ -11,21 +10,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class UodateSliderItem extends StatefulWidget {
-   UodateSliderItem({Key? key,required this.img,required this.docmentID}) : super(key: key);
+class AddSliderItem extends StatefulWidget {
+  const AddSliderItem({Key? key}) : super(key: key);
 
-  String img,docmentID;
   @override
-  State<UodateSliderItem> createState() => _UodateSliderItemState();
+  State<AddSliderItem> createState() => _AddPostItemState();
 }
 
-class _UodateSliderItemState extends State<UodateSliderItem> {
+class _AddPostItemState extends State<AddSliderItem> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
-  bool loading = false;
+
+ // bool loading = false;
+  final _key = GlobalKey<FormState>();
 
   final picker = ImagePicker();
   File? _images;
@@ -59,7 +59,7 @@ class _UodateSliderItemState extends State<UodateSliderItem> {
         builder: (BuildContext context) {
           return AlertDialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Container(
               height: 120,
               child: Column(
@@ -93,7 +93,7 @@ class _UodateSliderItemState extends State<UodateSliderItem> {
 
   @override
   Widget build(BuildContext context) {
-
+    final addsliderProvider=Provider.of<AdminAddSliderProvider>(context);
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -117,98 +117,64 @@ class _UodateSliderItemState extends State<UodateSliderItem> {
                               fit: BoxFit.cover,
                             ))
                           : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(20)),
-                        height: 100,
-                        width: 100,
-                        child: Image.network(
-                          widget.img,
-                        ),
-                      ))
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(20)),
+                              height: 100,
+                              width: 100,
+                              child: Icon(Icons.camera),
+                            )),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 CoustomMaterialButton(
                     onpressed: () async {
-                      setState(() {
-                        loading = true;
 
-                      });
-                      UpdateData(widget.docmentID);
+                      addsliderProvider.setLoding(true);
+
+                      FirebaseStorage storage = await FirebaseStorage.instance;
+                      UploadTask uploadTask =
+                      storage.ref("carousel-slider").child(_courseImages!.name).putFile(_images!);
+                      TaskSnapshot _snapshot = await uploadTask;
+                      var imgUrl = await _snapshot.ref.getDownloadURL();
+                    addsliderProvider.sendData(imgUrl, context);
 
 
                     },
-                    loading: loading,
+                    loading: addsliderProvider.loding,
                     data: 'Add Data'),
               ],
             )),
       ),
     );
   }
-  UpdateData(selectdata) async {
-    if (_courseImages != null) {
-      loading = true;
-      FirebaseStorage storage = await FirebaseStorage.instance;
-      UploadTask uploadTask =
-      storage.ref("products").child(_courseImages!.name).putFile(_images!);
-
-      TaskSnapshot _snapshot = await uploadTask.whenComplete(() {});
-
-      await _snapshot.ref.getDownloadURL().then((url) async {
-        await FirebaseFirestore.instance
-            .collection("products")
-            .doc(selectdata)
-            .update(({
-
-          "product-img": url
-        }))
-            .then((value) {
-          Utlis().toastMessage("Sucessfull");
-          // Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => HomePage()),
-          //         (route) => false);
-          setState(() {
-            loading = false;
-          });
-        }).onError((error, stackTrace) {
-          Utlis().toastMessage(error.toString());
-          setState(() {
-            loading = false;
-          });
-        });
-      });
-    } else {
-      loading = false;
-      FirebaseStorage storage = await FirebaseStorage.instance;
-      UploadTask uploadTask =
-      storage.ref("products").child(_courseImages!.name).putFile(_images!);
-      TaskSnapshot _snapshot = await uploadTask.whenComplete(() {});
-      await _snapshot.ref.getDownloadURL().then((img) async {
-        await FirebaseFirestore.instance
-            .collection("products")
-            .doc(selectdata)//problem image reqer
-            .update(({
-          "product-img": widget.img
-        }))
-            .then((value) {
-          Utlis().toastMessage("Sucessfull");
-          // Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => HomePage()),
-          //         (route) => false);
-          setState(() {
-            loading = false;
-          });
-        }).onError((error, stackTrace) {
-          Utlis().toastMessage(error.toString());
-          setState(() {
-            loading = false;
-          });
-        });
-      });
-    }
-  }
+  //
+  // sendData() async {
+  //   loading = true;
+  //   FirebaseStorage storage = await FirebaseStorage.instance;
+  //   UploadTask uploadTask =
+  //       storage.ref("carousel-slider").child(_courseImages!.name).putFile(_images!);
+  //   TaskSnapshot _snapshot = await uploadTask;
+  //   var imgUrl = await _snapshot.ref.getDownloadURL();
+  //
+  //   await FirebaseFirestore.instance
+  //       .collection("carousel-slider")
+  //       .add(({"img-path": imgUrl}))
+  //       .then((value) {
+  //     Utlis().toastMessage("Sucessfull");
+  //     Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => AdminItem()),
+  //         (route) => false);
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //   }).onError((error, stackTrace) {
+  //     Utlis().toastMessage(error.toString());
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //   });
+  // }
 }

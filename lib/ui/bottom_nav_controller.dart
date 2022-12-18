@@ -1,4 +1,3 @@
-import 'package:e_commerce_firbase/admin/card_item.dart';
 import 'package:e_commerce_firbase/const/AppColors.dart';
 import 'package:e_commerce_firbase/ui/bottom_nav_pages/cart.dart';
 import 'package:e_commerce_firbase/ui/bottom_nav_pages/favourite.dart';

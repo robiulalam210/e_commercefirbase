@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_firbase/admin/add_category_item.dart';
-import 'package:e_commerce_firbase/admin/addpost_carditem.dart';
-import 'package:e_commerce_firbase/admin/update_category.dart';
-import 'package:e_commerce_firbase/admin/updatepost_carditem.dart';
+import 'package:e_commerce_firbase/admin/add/add_category_item.dart';
+import 'package:e_commerce_firbase/admin/update/update_category.dart';
 import 'package:flutter/material.dart';
 
 import '../Utlis/utlis.dart';
