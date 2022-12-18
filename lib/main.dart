@@ -1,6 +1,5 @@
-import 'package:e_commerce_firbase/provider/admin/admin_add_category_provider.dart';
-import 'package:e_commerce_firbase/provider/admin/admin_add_provider.dart';
-import 'package:e_commerce_firbase/provider/admin/admin_add_slider_provider.dart';
+import 'package:e_commerce_firbase/provider/admin_add_category_provider.dart';
+import 'package:e_commerce_firbase/provider/admin_add_provider.dart';
 import 'package:e_commerce_firbase/provider/auth_provider.dart';
 import 'package:e_commerce_firbase/ui/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -57,7 +56,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => AdminAddProvider()),
         ChangeNotifierProvider(create: (_) => AdminAddCategoryProvider()),
-        ChangeNotifierProvider(create: (_) => AdminAddSliderProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

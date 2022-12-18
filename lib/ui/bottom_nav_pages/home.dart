@@ -9,7 +9,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import '../../main.dart';
 
 class Home extends StatefulWidget {
@@ -136,7 +135,9 @@ class _HomeState extends State<Home> {
                 importance: Importance.high,
                 color: Colors.blue,
                 playSound: true,
-                icon: '@mipmap/ic_launcher')));
+                icon: '@mipmap/ic_launcher')
+        )
+    );
   }
 
   @override
