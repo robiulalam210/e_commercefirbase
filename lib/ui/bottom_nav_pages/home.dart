@@ -232,15 +232,15 @@ class _HomeState extends State<Home> {
 
               //Category,,,,,,,,,,,,,,,,,
               Container(
-                height: 100,
+                height: 90,
                 width: double.infinity,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _categorys.length,
                     itemBuilder: (contex, index) {
                       return Container(
-                        width: 140,
-                        height: 100,
+                        width: 120,
+                        height: 90,
                         child: GestureDetector(
                           // onTap: () => Navigator.push(
                           //     context,
@@ -250,9 +250,12 @@ class _HomeState extends State<Home> {
                           child: Card(
                             elevation: 3,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+
                                       child: Container(
                                           width: double.infinity,
                                           color: Colors.yellow,
@@ -266,7 +269,7 @@ class _HomeState extends State<Home> {
                                       MediaQuery.of(context).size.height * 0.01,
                                 ),
                                 Text(
-                                  "Product: ${_categorys[index]["product-name"]}",
+                                  " ${_categorys[index]["product-name"]}",
                                   maxLines: 1,
                                 ),
                                 SizedBox(
@@ -313,14 +316,19 @@ class _HomeState extends State<Home> {
                         child: Card(
                           elevation: 3,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+
                             children: [
                               AspectRatio(
                                   aspectRatio: 2,
                                   child: Container(
                                       color: Colors.yellow,
-                                      child: Image.network(
-                                        _products[index]["product-img"],
-                                        fit: BoxFit.cover,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          _products[index]["product-img"],
+                                          fit: BoxFit.cover,
+                                        ),
                                       ))),
                               SizedBox(
                                 height:
